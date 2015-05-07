@@ -94,15 +94,6 @@ public class ConfigProperties{
 		
 	}
 	
-	public static void main(String[] arg) throws IOException
-	{
-		
-		ConfigProperties cp = new ConfigProperties("src/CM/config.properties");
-		
-		System.out.print(cp.getValue("name"));
-		
-		
-	}
 	
 	
 }
