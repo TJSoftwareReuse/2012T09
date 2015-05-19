@@ -12,9 +12,6 @@
 + data文件路径、PM路径、CM路径、LicenseLimit在config.properties里设置
 + data文件读入格式"name:TeamNumber\n"
 
-###Problem Left
-
-+ 我不是很确定我们组的PM是怎么用的，以及这个组件要有什么效果，所以可能有问题
 
 ###NOTE
 
