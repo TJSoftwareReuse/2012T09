@@ -1,9 +1,3 @@
-/*************************************************************************
-    > File Name: Queryserver.java
-    > Author: Iris Chen
-    > Mail: o0lazybear0o@gmail.com 
-    > Created Time: Sat May 16 13:39:49 2015
- ************************************************************************/
 package queryserver;
 
 import CM.ConfigProperties;
@@ -38,9 +32,15 @@ public class QueryServer {
     private static void load()
     {
         File file;
-        file = new File(config.getValue("DATA_PATH"));
+        
         QueryServer.data = new HashMap<String, String>();
         try {
+        	file = new File(config.getValue("DATA_PATH"));
+        	
+        	if(!file.exists()){
+        		FailureManager.logError("FILE NOT FOUND");
+        		return;
+        	}
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String tmpString = null;
             while ((tmpString = reader.readLine()) != null){
@@ -50,12 +50,13 @@ public class QueryServer {
                     FailureManager.logError("INVAILID INPUT FORMAT");
                     return;
                 }
-                data.put(tmpStr[0], tmpStr[1]);               
+                data.put(tmpStr[0], tmpStr[1]);     
+                //System.out.println(tmpStr[0] + " " + tmpStr[1]);
             }
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(QueryServer.class.getName()).log(Level.SEVERE, null, ex);            
-            FailureManager.logError("FILE NOT FOUD");
+            FailureManager.logError("FILE NOT FOUND");
         } catch (IOException ex) {
             Logger.getLogger(QueryServer.class.getName()).log(Level.SEVERE, null, ex);
             FailureManager.logError("INPUT EXCEPTION");
@@ -64,7 +65,7 @@ public class QueryServer {
     
     public static void readConfig() throws IOException
     {
-        config = new ConfigProperties("config.properties");
+        config = new ConfigProperties(configPath);
     }
     
     public static void init() throws IOException{
@@ -103,7 +104,7 @@ public class QueryServer {
         pm.stop();
         System.out.print("Goodbye.\n");
         FailureManager.logInfo("System shut down");
-    }
+    } 
     
     public static void main(String[] args) throws IOException {
         init();
@@ -111,6 +112,12 @@ public class QueryServer {
             run();
     }
     
+    public static void setConfigPath(String path){
+    	configPath = path;
+    }
+    
+    
+    private static String configPath = "config.properties";
     private static License license;
     private static PMPerMinute pm;
     private static ConfigProperties config = null;
