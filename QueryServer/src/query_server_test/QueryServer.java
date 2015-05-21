@@ -116,11 +116,31 @@ public class QueryServer {
     	configPath = path;
     }
     
+    public static HashMap<String, String> getData()
+    {
+    	return data;
+    }
     
-    private static String configPath = "config.properties";
+    public static String getConfigPath() {
+		return configPath;
+	}
+
+	public static License getLicense() {
+		return license;
+	}
+
+	public static PMPerMinute getPm() {
+		return pm;
+	}
+
+	public static ConfigProperties getConfig() {
+		return config;
+	}
+
+
+	private static String configPath = "config.properties";
     private static License license;
     private static PMPerMinute pm;
     private static ConfigProperties config = null;
     private static HashMap<String, String> data;
-    private static PrintStream out = System.out;
 }
