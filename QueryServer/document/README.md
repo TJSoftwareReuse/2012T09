@@ -17,6 +17,7 @@
 		LICENSE_NUM=5  
 	分别表示：
 	+ 学生姓名对应的Team编号的资源文件路径，格式为“姓名：Team”，每行代表一个学生；
+	![Aaron Swartz](https://github.com/TJSoftwareReuse/2012T09/raw/master/QueryServer/document/1.png)
 	+ 服务端日志文件路径；
 	+ PM路径
 	+ license数量  
