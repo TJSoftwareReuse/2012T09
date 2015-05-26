@@ -1,4 +1,4 @@
-package queryserver;
+﻿package queryserver;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class TeamQueryServer {
 	 * @param args
 	 * @throws IOException 
 	 */
-	private static HashMap<String,String> qData;
+	public static HashMap<String,String> qData;
 	public static void main(String[] args) throws IOException {
 		
 		QueryServer.init();
