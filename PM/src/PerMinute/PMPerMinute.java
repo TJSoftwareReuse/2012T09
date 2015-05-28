@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,10 +17,13 @@ import java.util.concurrent.TimeUnit;
 
 public class PMPerMinute {
 	
+	
 	private String  _path = null;
 	private Map<String , Double> indexMap = new HashMap<String, Double>();
 	private ScheduledExecutorService scheduleExec;
 	private Tasks task = new Tasks();
+	private String startTime = null;
+	private long intervalTime = 6000;
 	
 	/**
 	 * 构造函数
@@ -94,16 +98,20 @@ public class PMPerMinute {
 		return ctime;
 	}
 	
+	
 	/**
 	 * 生成报告
 	 * @throws IOException
 	 */
 	private void createReport() throws IOException
 	{
-
+		
+		
 		Map<String, Double> map = indexMap;
+		String current = cTime();
 		indexMap = new HashMap<String, Double>();
-		String url = _path+"/"+cTime();
+		String url = _path+"/"+startTime+"T"+current;
+		startTime = current;
 		File file = new File(url);
 		file.createNewFile();
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
@@ -146,15 +154,52 @@ public class PMPerMinute {
 	 */
 	public void  start()
 	{
-		scheduleExec.scheduleAtFixedRate(task,60000,60000,TimeUnit.MILLISECONDS);
+		startTime = cTime();
+		scheduleExec.scheduleAtFixedRate(task,intervalTime,intervalTime,TimeUnit.MILLISECONDS);
 	}
 	
 	/**
 	 * 停止生成报告
 	 */
-	public void stop()throws SecurityException
+	public void stop()
 	{
 		scheduleExec.shutdown();
+		if(!indexMap.isEmpty())
+		{
+			try {
+				createReport();
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	/**
+	 * 设置间隔时间段
+	 * @param intervalTime 单位ms
+	 */
+	public void setIntervalTime(long intervalTime) {
+		
+		scheduleExec.shutdown();
+		String currentTime = cTime();
+		SimpleDateFormat formatter;
+		formatter = new SimpleDateFormat("yyyy-MM-dd HH_mm_ss");
+		long current = 0;
+		long startT = 0;
+		long delay = 0;
+		
+		try {
+			current = formatter.parse(currentTime).getTime();
+			startT = formatter.parse(startTime).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		delay = startT+this.intervalTime-current;
+		this.intervalTime = intervalTime;
+		scheduleExec = Executors.newScheduledThreadPool(10);
+		scheduleExec.scheduleAtFixedRate(task,delay,intervalTime,TimeUnit.MILLISECONDS);
 	}
 
 }
