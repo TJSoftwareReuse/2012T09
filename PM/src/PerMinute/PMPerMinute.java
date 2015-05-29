@@ -23,7 +23,7 @@ public class PMPerMinute {
 	private ScheduledExecutorService scheduleExec;
 	private Tasks task = new Tasks();
 	private String startTime = null;
-	private long intervalTime = 6000;
+	private long intervalTime = 60000;
 	
 	/**
 	 * 构造函数
@@ -110,7 +110,7 @@ public class PMPerMinute {
 		Map<String, Double> map = indexMap;
 		String current = cTime();
 		indexMap = new HashMap<String, Double>();
-		String url = _path+"/"+startTime+"T"+current;
+		String url = _path+"/"+startTime+" T "+current;
 		startTime = current;
 		File file = new File(url);
 		file.createNewFile();
@@ -164,6 +164,7 @@ public class PMPerMinute {
 	public void stop()
 	{
 		scheduleExec.shutdown();
+		startTime = null;
 		if(!indexMap.isEmpty())
 		{
 			try {
@@ -181,6 +182,13 @@ public class PMPerMinute {
 	 * @param intervalTime 单位ms
 	 */
 	public void setIntervalTime(long intervalTime) {
+		
+		if(startTime == null)
+		{
+			this.intervalTime = intervalTime;
+			return;
+		}
+		
 		
 		scheduleExec.shutdown();
 		String currentTime = cTime();
@@ -201,5 +209,6 @@ public class PMPerMinute {
 		scheduleExec = Executors.newScheduledThreadPool(10);
 		scheduleExec.scheduleAtFixedRate(task,delay,intervalTime,TimeUnit.MILLISECONDS);
 	}
+	
 
 }
