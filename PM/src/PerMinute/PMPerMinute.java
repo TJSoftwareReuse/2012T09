@@ -164,7 +164,6 @@ public class PMPerMinute {
 	public void stop()
 	{
 		scheduleExec.shutdown();
-		startTime = null;
 		if(!indexMap.isEmpty())
 		{
 			try {
@@ -174,6 +173,7 @@ public class PMPerMinute {
 				e.printStackTrace();
 			}
 		}
+		startTime = null;
 	}
 	
 	
