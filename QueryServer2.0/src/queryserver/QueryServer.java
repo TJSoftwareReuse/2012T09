@@ -275,6 +275,17 @@ public class QueryServer implements Runnable{
         
     }
     
+    public static void setconfigPath(String string) {
+		configPath=string;
+		// TODO Auto-generated method stub
+		
+	}
+	public static void setstop(boolean string) {
+		stop=string;
+		// TODO Auto-generated method stub
+		
+	}
+    
 	private static String configPath = "config.properties";
     private static License license;
     private static PMPerMinute pm;
@@ -287,4 +298,5 @@ public class QueryServer implements Runnable{
     private static boolean stop = false;
     private static long configLastTime;
     private static long dataLastTime;
+	
 }
